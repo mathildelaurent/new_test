@@ -11,7 +11,7 @@ async function apiDatas() {
         console.log(document.getElementById('items'));
         // Insertion du lien a //
         var a = document.createElement('a');
-        a.href = `"./product.html?id="${item._id}`
+        a.href = `./product.html?id=${item._id}`;
         document.getElementById('items').appendChild(a);
 
         // Insertion de la balise article //
