@@ -43,14 +43,10 @@ async function apiDatas() {
         option.appendChild(optionText);
         document.getElementById('colors').appendChild(option);
     }
-
     addBasket();
 };
 
 apiDatas();
-
-const addBtn = document.getElementById('addToCart');
-console.log(addBtn);
 
 function addBasket() {
     class item {
@@ -58,30 +54,33 @@ function addBasket() {
             this.id = id;
             this.quantity = quantity;
             this.colors = colors;
-        };
-    };
-
+        }
+    }
+    const addBtn = document.getElementById('addToCart');
     addBtn.addEventListener('click', function() {
-        if(localStorage.getItem('myBasket') == null) { // S'il n'y a rien dans le panier //
+        if(localStorage.getItem('myBasket') == null){ // Si le panier est vide //
             let newItem = new item(idParam, quantity.value, colors.value);
             let totalOrder = [newItem];
-            let storageConversion = JSON.stringify(totalOrder);
-            localStorage.setItem('myBasket', storageConversion);
-        }else{ // S'il y a déjà qqc dans le panier //
+            let stringTotalOrder = JSON.stringify(totalOrder);
+            localStorage.setItem('myBasket', stringTotalOrder);
+        }else{ // s'il n'est pas vide //
             const originalData = JSON.parse(localStorage.getItem('myBasket'));
+            console.log(originalData);
             let exist = false;
-            for (let object of originalData) {
-                if (object.id == idParam && object.colors == colors.value) {
-                    initialQuantity = parseFloat(object.quantity);
-                    newQuantity = parseFloat(quantity.value);
-                    object.quantity = initialQuantity + newQuantity
+            for(let object of originalData) {
+                if(object.id == idParam && object.colors == colors.value) {
+                    let initialQuantity = parseFloat(object.quantity);
+                    let newQuantity = parseFloat(quantity.value);
+                    object.quantity = initialQuantity + newQuantity;
+                    originalData.push(object.quantity);
                     exist = true;
                 }
             }
             if(exist == false) {
                 let newItem = new item(idParam, quantity.value, colors.value);
-                originalData.push(newItem);
+                originalData.push(newItem)
             }
+            console.log(originalData);
             let stringConversion = JSON.stringify(originalData);
             localStorage.setItem('myBasket', stringConversion);
         }
